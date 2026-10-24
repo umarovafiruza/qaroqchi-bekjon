@@ -373,28 +373,34 @@ html, body {
   opacity: 1;
 }
 
-/* O'yin ichidagi popup xabarlar (Toast) */
+/* O'yin ichidagi popup xabarlar (Toast Notification - Ixcham va o'yinni to'smaydi) */
 .toast-message {
   position: absolute;
-  bottom: 25px;
+  top: 10px;
+  bottom: auto;
   left: 50%;
   transform: translateX(-50%);
-  background: #30201C;
-  color: #FFF8E1;
-  border: 3px solid #FFC107;
-  padding: 10px 18px;
-  font-size: 10px;
+  background: rgba(30, 20, 16, 0.92);
+  color: #FFE082;
+  border: 2px solid #FFC107;
+  border-radius: 20px;
+  padding: 5px 14px;
+  font-size: 8px;
+  font-family: var(--font-pixel);
   text-align: center;
-  z-index: 30;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-  animation: toastPop 0.3s ease-out;
+  z-index: 55;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
   pointer-events: none;
-  line-height: 1.5;
-  max-width: 85%;
+  line-height: 1.4;
+  max-width: 70%;
+  letter-spacing: 0.5px;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  animation: toastFadeIn 0.25s ease-out;
 }
 
-@keyframes toastPop {
-  0% { transform: translate(-50%, 15px); opacity: 0; }
+@keyframes toastFadeIn {
+  0% { transform: translate(-50%, -10px); opacity: 0; }
   100% { transform: translate(-50%, 0); opacity: 1; }
 }
 
@@ -402,16 +408,24 @@ html, body {
    3. EKRANLAR (MENYU, YUTUQ, YUTQAZISH, PAUZA)
    ========================================================== */
 .screen {
-  width: 100%;
-  max-width: 800px;
-  min-height: 480px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 50;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  z-index: 60 !important;
+  background: rgba(18, 12, 8, 0.88);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
 }
 
 .screen.hidden,
+#win-screen.hidden,
+#game-over-screen.hidden,
+#start-screen.hidden,
 .hidden {
   display: none !important;
 }
@@ -583,13 +597,23 @@ html, body {
    3.5. BOSHQICH YUTUG'I POP-UP (MULTFILMONA G'ALABA OYNASI)
    ========================================================== */
 #win-screen {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  z-index: 70 !important;
   background: rgba(18, 12, 8, 0.88);
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
-  display: flex;
+  display: flex !important;
   align-items: center;
   justify-content: center;
   padding: 12px;
+}
+
+#win-screen.hidden {
+  display: none !important;
 }
 
 .win-popup-wrapper {
@@ -1438,45 +1462,6 @@ html, body {
     display: flex !important;
   }
 
-  /* Vertikal (Portret) holatda Canvas BUTUN ekranni to'liq egallaydi */
-  #canvas-wrapper {
-    flex: 1;
-    width: 100%;
-    height: calc(100dvh - 38px);
-    max-height: calc(100dvh - 38px);
-    padding: 0;
-  }
-
-  #gameCanvas {
-    width: 100%;
-    height: 100%;
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-  }
-
-  /* Mobil boshqaruv pulti - ekran ustida suzuvchi (transparent overlay) */
-  #touch-controls {
-    display: flex !important;
-    position: absolute !important;
-    bottom: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    top: auto !important;
-    width: 100% !important;
-    height: auto !important;
-    min-height: 0 !important;
-    background: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-    padding: 8px 12px !important;
-    padding-bottom: max(10px, env(safe-area-inset-bottom)) !important;
-    padding-left: max(10px, env(safe-area-inset-left)) !important;
-    padding-right: max(10px, env(safe-area-inset-right)) !important;
-    pointer-events: none !important;
-    z-index: 35 !important;
-  }
-
   /* Bosh menyu va boshqa modallarni moslashtirish */
   .menu-box {
     padding: 20px 14px;
@@ -1496,6 +1481,70 @@ html, body {
   .btn {
     padding: 10px 14px;
     font-size: 9px;
+  }
+}
+
+/* ==========================================================
+   MOBILDA DOIMIY GORIZONTAL (LANDSCAPE ROTATE) MOSLASHUV
+   Telefon tik tursa ham o'yin majburiy 90 gradus burilib, gorizontal bo'ladi
+   ========================================================== */
+@media screen and (orientation: portrait) and (max-width: 900px) {
+  html, body {
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden !important;
+    position: fixed;
+    top: 0;
+    left: 0;
+  }
+
+  #game-container {
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    width: 100dvh !important;
+    height: 100dvw !important;
+    max-width: 100dvh !important;
+    max-height: 100dvw !important;
+    transform: translate(-50%, -50%) rotate(90deg) !important;
+    transform-origin: center center !important;
+    overflow: hidden !important;
+  }
+
+  #canvas-wrapper {
+    flex: 1;
+    width: 100% !important;
+    height: calc(100dvw - 36px) !important;
+    max-height: calc(100dvw - 36px) !important;
+    padding: 0 !important;
+  }
+
+  #gameCanvas {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    object-fit: contain !important;
+  }
+
+  #touch-controls {
+    display: flex !important;
+    position: absolute !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 6px 14px !important;
+    padding-bottom: max(6px, env(safe-area-inset-bottom)) !important;
+    padding-left: max(10px, env(safe-area-inset-left)) !important;
+    padding-right: max(10px, env(safe-area-inset-right)) !important;
+    pointer-events: none !important;
+    z-index: 35 !important;
   }
 }
 

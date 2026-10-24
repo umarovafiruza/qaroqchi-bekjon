@@ -1026,7 +1026,7 @@ function showToast(msg) {
   toastEl.classList.remove('hidden');
   toastTimeout = setTimeout(() => {
     toastEl.classList.add('hidden');
-  }, 2600);
+  }, 1600);
 }
 
 /**
@@ -1130,6 +1130,11 @@ function triggerDamageFlash() {
  */
 function startGame() {
   initAudio();
+  try {
+    if (screen.orientation && screen.orientation.lock) {
+      screen.orientation.lock('landscape').catch(() => {});
+    }
+  } catch (e) {}
   currentLevelIndex = 0;
   score = 0;
   coins = 0;
@@ -2793,6 +2798,7 @@ function winLevel() {
     btnRestart.classList.add('hidden');
   }
 
+  winScreen.style.removeProperty('display');
   winScreen.classList.remove('hidden');
 }
 
@@ -3766,8 +3772,17 @@ function updateJoystickMovement(clientX, clientY) {
   const centerX = rect.left + rect.width / 2;
   const centerY = rect.top + rect.height / 2;
 
-  const deltaX = clientX - centerX;
-  const deltaY = clientY - centerY;
+  let deltaX = clientX - centerX;
+  let deltaY = clientY - centerY;
+
+  // Agar telefon portret holatda bo'lib, o'yin CSS orqali 90 gradus burilgan bo'lsa
+  if (window.innerWidth < window.innerHeight && window.innerWidth <= 900) {
+    const rawX = deltaX;
+    const rawY = deltaY;
+    deltaX = rawY;
+    deltaY = -rawX;
+  }
+
   const distance = Math.hypot(deltaX, deltaY);
 
   // Maksimal siljish radiusi
@@ -4107,9 +4122,12 @@ document.getElementById('btn-quit').addEventListener('click', () => {
   returnToMainMenu();
 });
 
-// Keyingi darajaga o'tish
-document.getElementById('btn-next-level').addEventListener('click', () => {
+// Keyingi darajaga o'tish (Tayyorman / Davom etish)
+document.getElementById('btn-next-level').addEventListener('click', (e) => {
+  e.preventDefault();
+  e.stopPropagation();
   winScreen.classList.add('hidden');
+  winScreen.style.setProperty('display', 'none', 'important');
   currentLevelIndex++;
   isGameWon = false;
   loadLevel(currentLevelIndex);
