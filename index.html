@@ -367,33 +367,158 @@
       </div>
     </div>
 
-    <!-- 4. Bosqich yutug'i / G'alaba oynasi -->
+    <!-- 4. Bosqich yutug'i / G'alaba oynasi (Ajoyib Multfilm Pop-up Dizayn) -->
     <div id="win-screen" class="screen overlay-screen hidden">
-      <div class="dialog-box win-card">
-        <div class="win-crown">👑</div>
-        <h2 id="win-title">BOSQICH YUTILDINGIZ!</h2>
-        <p id="win-desc">Xazina muvaffaqiyatli qo'lga kiritildi!</p>
+      <div class="win-popup-wrapper">
+        <!-- Orqa fondagi aylanuvchi oltin nurlar va olovli alanga -->
+        <div class="win-rays-bg"></div>
+        <div class="win-flames-crown">
+          <svg viewBox="0 0 400 120" preserveAspectRatio="none" class="flames-svg">
+            <path d="M0,120 Q30,45 60,95 Q100,15 140,85 Q180,5 210,75 Q240,10 270,80 Q310,20 350,90 Q380,45 400,120 Z" fill="url(#flame-grad)"/>
+            <path d="M20,120 Q50,65 80,105 Q120,35 160,95 Q195,20 225,85 Q255,25 285,90 Q325,40 365,100 Q390,60 400,120 Z" fill="url(#inner-flame-grad)"/>
+            <defs>
+              <linearGradient id="flame-grad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#FF3D00"/>
+                <stop offset="50%" stop-color="#FF9100"/>
+                <stop offset="100%" stop-color="#FFEA00"/>
+              </linearGradient>
+              <linearGradient id="inner-flame-grad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#FFF9C4"/>
+                <stop offset="100%" stop-color="#FFAB00"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
 
-        <div class="stats-summary">
-          <div class="stat-line">
-            <span>Yig'ilgan tangalar:</span>
+        <!-- Uchuvchi yulduzchalar va tilla tangalar -->
+        <div class="win-particles-layer">
+          <span class="win-sparkle sp-1">✨</span>
+          <span class="win-sparkle sp-2">⭐</span>
+          <span class="win-sparkle sp-3">✨</span>
+          <span class="win-sparkle sp-4">⭐</span>
+          <span class="win-sparkle sp-5">✨</span>
+          <div class="win-floating-coin c-1">🪙</div>
+          <div class="win-floating-coin c-2">🪙</div>
+          <div class="win-floating-coin c-3">🪙</div>
+        </div>
+
+        <!-- Chapda: Quvonchdan qo'llarini ko'targan xursand qahramon -->
+        <div class="win-character-box">
+          <svg class="win-hero-svg" viewBox="0 0 120 130">
+            <!-- Chap qo'l -->
+            <path d="M26 65 Q12 40 8 28 Q17 24 25 38 L36 58 Z" fill="#388E3C" stroke="#1B5E20" stroke-width="2.5"/>
+            <circle cx="9" cy="25" r="9" fill="#FFCC80" stroke="#1B5E20" stroke-width="2.5"/>
+            <!-- O'ng qo'l -->
+            <path d="M94 65 Q108 40 112 28 Q103 24 95 38 L84 58 Z" fill="#388E3C" stroke="#1B5E20" stroke-width="2.5"/>
+            <circle cx="111" cy="25" r="9" fill="#FFCC80" stroke="#1B5E20" stroke-width="2.5"/>
+            <!-- Tana -->
+            <rect x="32" y="60" width="56" height="52" rx="8" fill="#388E3C" stroke="#1B5E20" stroke-width="3"/>
+            <!-- Yoqa -->
+            <polygon points="50,60 60,72 70,60" fill="#2E7D32"/>
+            <!-- Kamar -->
+            <rect x="32" y="96" width="56" height="12" fill="#3E2723"/>
+            <rect x="52" y="93" width="16" height="18" rx="3" fill="#FFD54F" stroke="#FF8F00" stroke-width="2"/>
+            <!-- Bo'yin -->
+            <rect x="50" y="50" width="20" height="14" fill="#FFB74D"/>
+            <!-- Bosh -->
+            <rect x="34" y="16" width="52" height="42" rx="12" fill="#FFCC80" stroke="#4E342E" stroke-width="2.5"/>
+            <!-- Quloqlar -->
+            <circle cx="33" cy="38" r="5" fill="#FFCC80" stroke="#4E342E" stroke-width="2"/>
+            <circle cx="87" cy="38" r="5" fill="#FFCC80" stroke="#4E342E" stroke-width="2"/>
+            <!-- Ko'zlar -->
+            <rect x="46" y="32" width="6" height="8" rx="3" fill="#2E1C0C"/>
+            <rect x="68" y="32" width="6" height="8" rx="3" fill="#2E1C0C"/>
+            <!-- Kulayotgan og'iz -->
+            <path d="M48 44 Q60 58 72 44 Z" fill="#D32F2F" stroke="#2E1C0C" stroke-width="2"/>
+            <path d="M52 44 Q60 48 68 44 Z" fill="#FFFFFF"/>
+            <ellipse cx="42" cy="43" rx="4" ry="2.5" fill="#FF8A80" opacity="0.7"/>
+            <ellipse cx="78" cy="43" rx="4" ry="2.5" fill="#FF8A80" opacity="0.7"/>
+            <!-- Yashil kepka -->
+            <path d="M28 22 Q60 6 92 22 L94 28 Q60 20 26 28 Z" fill="#2E7D32" stroke="#1B5E20" stroke-width="2.5"/>
+            <rect x="35" y="8" width="50" height="16" rx="6" fill="#43A047" stroke="#1B5E20" stroke-width="2.5"/>
+          </svg>
+        </div>
+
+        <!-- O'ngda: Ochiq xazina sandig'i -->
+        <div class="win-chest-box">
+          <svg class="win-chest-svg" viewBox="0 0 120 110">
+            <!-- Nurlar -->
+            <polygon points="60,35 15,10 30,0 60,30 90,0 105,10" fill="#FFE082" opacity="0.6"/>
+            <!-- Sandiq ichidagi tillalar -->
+            <ellipse cx="60" cy="50" rx="36" ry="12" fill="#FF8F00"/>
+            <circle cx="48" cy="48" r="7" fill="#FFD54F" stroke="#FF8F00" stroke-width="1.5"/>
+            <circle cx="62" cy="46" r="8" fill="#FFF59D" stroke="#FF8F00" stroke-width="1.5"/>
+            <circle cx="74" cy="49" r="7" fill="#FFCA28" stroke="#FF8F00" stroke-width="1.5"/>
+            <!-- Ochiq qopqoq -->
+            <path d="M16 22 L38 6 L104 14 L82 30 Z" fill="#8D5B28" stroke="#3E2723" stroke-width="3"/>
+            <path d="M18 20 L36 8 L42 10 L24 23 Z" fill="#FFB300" stroke="#3E2723" stroke-width="1.5"/>
+            <path d="M80 26 L100 14 L104 16 L84 29 Z" fill="#FFB300" stroke="#3E2723" stroke-width="1.5"/>
+            <!-- Sandiq tanasi -->
+            <path d="M18 46 L102 46 L94 92 L26 92 Z" fill="#8D5B28" stroke="#3E2723" stroke-width="3.5"/>
+            <!-- Oltin tasmalar -->
+            <path d="M18 46 L30 46 L36 92 L26 92 Z" fill="#FFB300" stroke="#3E2723" stroke-width="2"/>
+            <path d="M90 46 L102 46 L94 92 L84 92 Z" fill="#FFB300" stroke="#3E2723" stroke-width="2"/>
+            <rect x="52" y="46" width="16" height="46" fill="#FFB300" stroke="#3E2723" stroke-width="2"/>
+            <circle cx="60" cy="64" r="5" fill="#3E2723"/>
+            <polygon points="58,64 62,64 63,72 57,72" fill="#3E2723"/>
+          </svg>
+        </div>
+
+        <!-- Asosiy Oltin Planka (Gold Plaque Banner) -->
+        <div class="win-gold-plaque">
+          <div class="plaque-gloss"></div>
+          <h2 id="win-title" class="win-banner-title">Tayyorman!</h2>
+          <p id="win-desc" class="win-banner-subtitle">Bosqich muvaffaqiyatli yutildi!</p>
+        </div>
+
+        <!-- Pastki bezaklar: Chapda tojli oltin tanga, O'ngda kichik sandiq -->
+        <div class="win-coin-crown-deco">
+          <svg viewBox="0 0 60 60" width="56" height="56">
+            <circle cx="30" cy="30" r="26" fill="#FFB300" stroke="#4E342E" stroke-width="3"/>
+            <circle cx="30" cy="30" r="21" fill="#FFD54F" stroke="#FFA000" stroke-width="2"/>
+            <path d="M19 36 L21 24 L26 29 L30 21 L34 29 L39 24 L41 36 Z" fill="#E65100" stroke="#4E342E" stroke-width="1.5"/>
+            <rect x="19" y="36" width="22" height="3" rx="1" fill="#BF360C"/>
+          </svg>
+        </div>
+
+        <div class="win-small-chest-deco">
+          <svg viewBox="0 0 60 50" width="54" height="45">
+            <rect x="8" y="20" width="44" height="25" rx="3" fill="#8D5B28" stroke="#3E2723" stroke-width="2.5"/>
+            <path d="M8 20 Q30 9 52 20 Z" fill="#B87737" stroke="#3E2723" stroke-width="2.5"/>
+            <rect x="25" y="18" width="10" height="27" fill="#FFC107" stroke="#3E2723" stroke-width="1.5"/>
+            <circle cx="30" cy="28" r="2.5" fill="#3E2723"/>
+          </svg>
+        </div>
+
+        <!-- Yashil 3D Glossy Tugma (DAVOM ETISH) -->
+        <div class="win-actions-wrapper">
+          <button id="btn-next-level" class="btn-green-glossy">
+            <span class="btn-gloss-light"></span>
+            <span class="btn-text">DAVOM ETISH</span>
+          </button>
+          <button id="btn-restart-game" class="btn-green-glossy hidden">
+            <span class="btn-gloss-light"></span>
+            <span class="btn-text">QAYTA O'YNASH</span>
+          </button>
+        </div>
+
+        <!-- Ixcham g'alaba statistikasi -->
+        <div class="win-compact-stats">
+          <div class="cstat-item">
+            <span class="cstat-icon">🪙</span>
             <span id="win-coins-count">0</span>
           </div>
-          <div class="stat-line">
-            <span>Qolgan jonlar bonusi:</span>
+          <div class="cstat-item">
+            <span class="cstat-icon">❤️</span>
             <span id="win-lives-bonus">+0</span>
           </div>
-          <div class="stat-line total-score">
-            <span>Jami Ball:</span>
+          <div class="cstat-item total">
+            <span class="cstat-icon">🏆</span>
             <span id="win-total-score">0</span>
           </div>
         </div>
 
-        <div class="dialog-actions">
-          <button id="btn-next-level" class="btn btn-primary">KEYINGI DARAJA</button>
-          <button id="btn-restart-game" class="btn btn-secondary hidden">QAYTA O'YNASH</button>
-          <button id="btn-win-home" class="btn btn-secondary">BOSH MENYU</button>
-        </div>
+        <button id="btn-win-home" class="btn-link-home">🏠 BOSH MENYU</button>
       </div>
     </div>
 

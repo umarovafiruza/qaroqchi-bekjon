@@ -2782,13 +2782,13 @@ function winLevel() {
   document.getElementById('win-total-score').textContent = score;
 
   if (isFinalLevel) {
-    winTitle.textContent = "SIZ MUTLAQ CHEMPIONSIZ! 🏆";
+    winTitle.textContent = "Chempionsiz! 🏆";
     winDesc.textContent = `Barcha ${LEVEL_CONFIGS.length} ta qiyin bosqich va Qaroqchilar Imperatori mag'lub etildi!`;
     btnNext.classList.add('hidden');
     btnRestart.classList.remove('hidden');
   } else {
-    winTitle.textContent = "BOSQICH YUTILDI! 🎉";
-    winDesc.textContent = "Xazina sandig'i ochildi! Keyingi daraja kutyapti!";
+    winTitle.textContent = "Tayyorman!";
+    winDesc.textContent = `${currentLevelIndex + 1}-bosqich yutildi! Keyingi sarguzasht kutmoqda!`;
     btnNext.classList.remove('hidden');
     btnRestart.classList.add('hidden');
   }
