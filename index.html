@@ -49,7 +49,7 @@
         <div class="instructions-content">
           <div class="instruction-row">
             <span class="badge">Boshqaruv</span>
-            <span><b>W, A, S, D</b> yoki <b>Strelkalar</b> — Harakatlanish</span>
+            <span><b>W, A, S, D</b>, <b>Strelkalar</b> yoki <b>Virtual Joystik 🕹️</b> — Harakatlanish</span>
           </div>
           <div class="instruction-row">
             <span class="badge">[E]</span>
@@ -206,39 +206,39 @@
         </div>
       </div>
 
-      <!-- Sensorli / Mobil qurilmalar uchun virtual boshqaruv pulti -->
+      <!-- Sensorli / Mobil qurilmalar uchun virtual boshqaruv pulti (Ekran ustidagi yarim-shaffof overlay) -->
       <div id="touch-controls" class="mobile-only">
-        <!-- Chap tomonda: D-Pad (Yo'nalish boshqaruvi) -->
-        <div class="d-pad-container">
-          <div class="d-pad">
-            <button class="d-btn up" data-key="ArrowUp" aria-label="Yuqoriga">▲</button>
-            <div class="d-pad-horizontal">
-              <button class="d-btn left" data-key="ArrowLeft" aria-label="Chapga">◀</button>
-              <div class="d-pad-center"></div>
-              <button class="d-btn right" data-key="ArrowRight" aria-label="O'ngga">▶</button>
+        <!-- Chap tomonda: Virtual Joystik (Ergonomik harakat nazoratchisi) -->
+        <div id="joystick-zone" class="joystick-zone">
+          <div id="joystick-base" class="joystick-base">
+            <div id="joystick-stick" class="joystick-stick"></div>
+            <div class="joystick-directions">
+              <span class="j-arrow j-up">▲</span>
+              <span class="j-arrow j-right">▶</span>
+              <span class="j-arrow j-down">▼</span>
+              <span class="j-arrow j-left">◀</span>
             </div>
-            <button class="d-btn down" data-key="ArrowDown" aria-label="Pastga">▼</button>
           </div>
         </div>
 
-        <!-- O'ng tomonda: Harakat tugmalari klasteri -->
+        <!-- O'ng tomonda: Harakat tugmalari klasteri (O'yinga xalaqit bermaydigan ergonomik ark) -->
         <div class="action-buttons-cluster">
           <div class="action-top-row">
-            <button class="act-btn btn-rescue-act" data-action="rescue" aria-label="Qutqaruv savoli">
+            <button class="act-btn btn-rescue-act" data-action="rescue" aria-label="Qutqaruv savoli" title="Qutqaruvchi SOS">
               <span class="act-symbol">🆘</span>
               <span class="act-text">SOS</span>
             </button>
-            <button class="act-btn btn-fuel" data-action="refuel" aria-label="Yoqilg'i quyish">
+            <button class="act-btn btn-fuel" data-action="refuel" aria-label="Yoqilg'i quyish" title="Benzin quyish">
               <span class="act-symbol">⛽</span>
               <span class="act-text">BENZIN</span>
             </button>
           </div>
           <div class="action-bottom-row">
-            <button class="act-btn btn-car" data-action="toggleCar" aria-label="Moshinaga o'tirish/tushish">
+            <button class="act-btn btn-car" data-action="toggleCar" aria-label="Moshinaga o'tirish/tushish" title="Moshina">
               <span class="act-symbol">🚗</span>
               <span class="act-text">MOSHINA</span>
             </button>
-            <button class="act-btn btn-shoot" data-action="shoot" aria-label="O'q otish">
+            <button class="act-btn btn-shoot" data-action="shoot" aria-label="O'q otish" title="O'q otish">
               <span class="act-symbol">🔫</span>
               <span class="act-text">OTISH</span>
             </button>

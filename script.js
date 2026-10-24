@@ -3716,6 +3716,7 @@ function togglePause() {
   if (isGameOver || isGameWon) return;
   isPaused = !isPaused;
   if (isPaused) {
+    if (typeof resetJoystick === 'function') resetJoystick();
     pauseScreen.classList.remove('hidden');
   } else {
     pauseScreen.classList.add('hidden');
@@ -3725,95 +3726,162 @@ function togglePause() {
 
 // --- 13. MOBIL VA VIRTUAL BOSHQARUV TUGMALARI ---
 // ==========================================================
-// 13. MOBIL D-PAD VA ERGONOMIK SENSORLI BOSHQARUV
+// 13. MOBIL VIRTUAL JOYSTIK VA ERGONOMIK SENSORLI BOSHQARUV
 // ==========================================================
-const dpadContainer = document.querySelector('.d-pad');
-const dpadButtons = document.querySelectorAll('.d-btn');
+const joystickZone = document.getElementById('joystick-zone');
+const joystickBase = document.getElementById('joystick-base');
+const joystickStick = document.getElementById('joystick-stick');
+const joystickArrows = {
+  up: document.querySelector('.j-arrow.j-up'),
+  right: document.querySelector('.j-arrow.j-right'),
+  down: document.querySelector('.j-arrow.j-down'),
+  left: document.querySelector('.j-arrow.j-left')
+};
 
-function resetDpadKeys() {
+let activeJoystickTouchId = null;
+let isJoystickMouseDown = false;
+
+function resetJoystick() {
   keys['ArrowUp'] = false;
   keys['ArrowDown'] = false;
   keys['ArrowLeft'] = false;
   keys['ArrowRight'] = false;
-  dpadButtons.forEach(btn => btn.classList.remove('active'));
+  
+  if (joystickStick) {
+    joystickStick.style.transform = 'translate(-50%, -50%)';
+    joystickStick.classList.remove('active');
+  }
+  if (joystickBase) {
+    joystickBase.classList.remove('active');
+  }
+  Object.values(joystickArrows).forEach(arrow => {
+    if (arrow) arrow.classList.remove('active');
+  });
 }
 
-function handleDpadTouch(touchX, touchY) {
-  const el = document.elementFromPoint(touchX, touchY);
-  if (!el) {
-    resetDpadKeys();
+function updateJoystickMovement(clientX, clientY) {
+  if (!joystickBase || !joystickStick) return;
+
+  const rect = joystickBase.getBoundingClientRect();
+  const centerX = rect.left + rect.width / 2;
+  const centerY = rect.top + rect.height / 2;
+
+  const deltaX = clientX - centerX;
+  const deltaY = clientY - centerY;
+  const distance = Math.hypot(deltaX, deltaY);
+
+  // Maksimal siljish radiusi
+  const maxRadius = Math.max(28, (rect.width / 2) - 8);
+  const clampedDist = Math.min(distance, maxRadius);
+  const angle = Math.atan2(deltaY, deltaX);
+
+  const stickX = Math.cos(angle) * clampedDist;
+  const stickY = Math.sin(angle) * clampedDist;
+
+  joystickStick.style.transform = `translate(calc(-50% + ${stickX.toFixed(1)}px), calc(-50% + ${stickY.toFixed(1)}px))`;
+  joystickStick.classList.add('active');
+  joystickBase.classList.add('active');
+
+  // Deadzone
+  const deadZone = 8;
+  if (distance < deadZone) {
+    keys['ArrowUp'] = false;
+    keys['ArrowDown'] = false;
+    keys['ArrowLeft'] = false;
+    keys['ArrowRight'] = false;
+    Object.values(joystickArrows).forEach(arrow => arrow && arrow.classList.remove('active'));
     return;
   }
-  const btn = el.closest('.d-btn');
-  if (btn && btn.dataset.key) {
-    const key = btn.dataset.key;
-    resetDpadKeys();
-    keys[key] = true;
-    btn.classList.add('active');
+
+  // Normalizatsiya (-1 dan 1 gacha)
+  const normX = stickX / maxRadius;
+  const normY = stickY / maxRadius;
+
+  // 8-yo'nalishli pol sezgirligi
+  const threshold = 0.35;
+  const goUp = normY < -threshold;
+  const goDown = normY > threshold;
+  const goLeft = normX < -threshold;
+  const goRight = normX > threshold;
+
+  keys['ArrowUp'] = goUp;
+  keys['ArrowDown'] = goDown;
+  keys['ArrowLeft'] = goLeft;
+  keys['ArrowRight'] = goRight;
+
+  // Vizual strelkalar akslantirishi
+  if (joystickArrows.up) joystickArrows.up.classList.toggle('active', goUp);
+  if (joystickArrows.down) joystickArrows.down.classList.toggle('active', goDown);
+  if (joystickArrows.left) joystickArrows.left.classList.toggle('active', goLeft);
+  if (joystickArrows.right) joystickArrows.right.classList.toggle('active', goRight);
+
+  // Qahramon yo'nalishini burish
+  if (Math.abs(normX) > Math.abs(normY)) {
+    if (goRight) player.facing = 'right';
+    else if (goLeft) player.facing = 'left';
   } else {
-    resetDpadKeys();
+    if (goDown) player.facing = 'down';
+    else if (goUp) player.facing = 'up';
   }
 }
 
-if (dpadContainer) {
-  let activeDpadTouchId = null;
-
-  dpadContainer.addEventListener('touchstart', (e) => {
+if (joystickZone) {
+  // Touch / Sensorli boshqaruv
+  joystickZone.addEventListener('touchstart', (e) => {
     e.preventDefault();
     initAudio();
     for (let i = 0; i < e.changedTouches.length; i++) {
       const t = e.changedTouches[i];
-      activeDpadTouchId = t.identifier;
-      handleDpadTouch(t.clientX, t.clientY);
+      activeJoystickTouchId = t.identifier;
+      updateJoystickMovement(t.clientX, t.clientY);
       break;
     }
   }, { passive: false });
 
-  dpadContainer.addEventListener('touchmove', (e) => {
-    e.preventDefault();
+  window.addEventListener('touchmove', (e) => {
+    if (activeJoystickTouchId === null) return;
     for (let i = 0; i < e.touches.length; i++) {
       const t = e.touches[i];
-      if (t.identifier === activeDpadTouchId) {
-        handleDpadTouch(t.clientX, t.clientY);
+      if (t.identifier === activeJoystickTouchId) {
+        updateJoystickMovement(t.clientX, t.clientY);
         break;
       }
     }
   }, { passive: false });
 
-  const endDpadTouch = (e) => {
-    e.preventDefault();
+  const handleTouchEnd = (e) => {
+    if (activeJoystickTouchId === null) return;
     for (let i = 0; i < e.changedTouches.length; i++) {
-      if (e.changedTouches[i].identifier === activeDpadTouchId) {
-        activeDpadTouchId = null;
-        resetDpadKeys();
+      if (e.changedTouches[i].identifier === activeJoystickTouchId) {
+        activeJoystickTouchId = null;
+        resetJoystick();
         break;
       }
     }
   };
 
-  dpadContainer.addEventListener('touchend', endDpadTouch, { passive: false });
-  dpadContainer.addEventListener('touchcancel', endDpadTouch, { passive: false });
-}
+  window.addEventListener('touchend', handleTouchEnd, { passive: false });
+  window.addEventListener('touchcancel', handleTouchEnd, { passive: false });
 
-// Sichqoncha orqali ham test qilish uchun:
-dpadButtons.forEach((btn) => {
-  const key = btn.dataset.key;
-  btn.addEventListener('mousedown', (e) => {
+  // Sichqoncha orqali test qilish
+  joystickZone.addEventListener('mousedown', (e) => {
     e.preventDefault();
     initAudio();
-    keys[key] = true;
-    btn.classList.add('active');
+    isJoystickMouseDown = true;
+    updateJoystickMovement(e.clientX, e.clientY);
   });
-  btn.addEventListener('mouseup', (e) => {
-    e.preventDefault();
-    keys[key] = false;
-    btn.classList.remove('active');
+
+  window.addEventListener('mousemove', (e) => {
+    if (!isJoystickMouseDown) return;
+    updateJoystickMovement(e.clientX, e.clientY);
   });
-  btn.addEventListener('mouseleave', (e) => {
-    keys[key] = false;
-    btn.classList.remove('active');
+
+  window.addEventListener('mouseup', () => {
+    if (!isJoystickMouseDown) return;
+    isJoystickMouseDown = false;
+    resetJoystick();
   });
-});
+}
 
 // Mobil Harakat tugmalari (Action Buttons: OTISH, MOSHINA, BENZIN, SOS)
 const actionButtons = document.querySelectorAll('.act-btn');

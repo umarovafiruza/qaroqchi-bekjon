@@ -57,8 +57,10 @@ html, body {
   position: relative;
   width: 100vw;
   height: 100vh;
+  height: 100dvh;
   max-width: 100vw;
   max-height: 100vh;
+  max-height: 100dvh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -790,81 +792,123 @@ html, body {
 }
 
 /* ==========================================================
-   4.5. MOBIL VA SENSORLI BOSHQARUV TUGMALARI
+   4.5. MOBIL VA SENSORLI BOSHQARUV (JOYSTICK & ERGONOMIK OVERLAY)
    ========================================================== */
 #touch-controls {
   display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
+  height: 100%;
+  pointer-events: none; /* O'yin maydonidagi elementlarga bosishga xalaqit bermaydi */
   box-sizing: border-box;
   user-select: none;
   -webkit-user-select: none;
   touch-action: none;
   -webkit-touch-callout: none;
+  z-index: 35;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 12px 14px;
+  padding-bottom: max(14px, env(safe-area-inset-bottom));
+  padding-left: max(14px, env(safe-area-inset-left));
+  padding-right: max(14px, env(safe-area-inset-right));
 }
 
-/* D-Pad konteyneri */
-.d-pad-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.d-pad {
+/* Virtual Joystik zonasi (Chap burchak) */
+.joystick-zone {
+  pointer-events: auto;
   position: relative;
-  width: 140px;
-  height: 140px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.d-pad-horizontal {
+  width: 130px;
+  height: 130px;
   display: flex;
   align-items: center;
   justify-content: center;
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.d-pad-center {
+.joystick-base {
+  position: relative;
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 248, 225, 0.12) 0%, rgba(20, 15, 12, 0.5) 85%);
+  border: 2px dashed rgba(255, 248, 225, 0.45);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5), inset 0 0 12px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  transition: border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+  touch-action: none;
+}
+
+.joystick-base.active {
+  border-style: solid;
+  border-color: rgba(255, 193, 7, 0.85);
+  background: radial-gradient(circle, rgba(255, 193, 7, 0.22) 0%, rgba(20, 15, 12, 0.65) 85%);
+  box-shadow: 0 0 16px rgba(255, 193, 7, 0.35), inset 0 0 14px rgba(0, 0, 0, 0.7);
+}
+
+.joystick-stick {
+  position: absolute;
+  top: 50%;
+  left: 50%;
   width: 44px;
   height: 44px;
-  background: #251614;
-  border: 1px solid #1a0e0c;
-}
-
-.d-btn {
-  width: 46px;
-  height: 46px;
-  background: #FFF8E1;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(255, 224, 130, 0.95) 0%, rgba(255, 152, 0, 0.9) 100%);
   border: 3px solid #30201C;
-  font-size: 18px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.6), inset -2px -2px 0px rgba(0, 0, 0, 0.3), inset 2px 2px 0px rgba(255, 255, 255, 0.6);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  will-change: transform;
+  transition: background 0.15s ease;
+}
+
+.joystick-stick.active {
+  background: linear-gradient(135deg, #FFE082 0%, #FF9800 100%);
+  box-shadow: 0 0 12px rgba(255, 193, 7, 0.8), inset -2px -2px 0px rgba(0, 0, 0, 0.3), inset 2px 2px 0px rgba(255, 255, 255, 0.8);
+}
+
+/* Joystik ichidagi nozik yo'nalish strelkalari */
+.joystick-directions {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.j-arrow {
+  position: absolute;
+  font-size: 9px;
+  color: rgba(255, 248, 225, 0.4);
   font-family: var(--font-pixel);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 2px 2px 0px #30201C;
-  touch-action: none;
-  color: #30201C;
-  user-select: none;
-  -webkit-user-select: none;
-  -webkit-tap-highlight-color: transparent;
-  transition: transform 0.05s, background-color 0.05s;
+  line-height: 1;
+  transition: color 0.1s ease, transform 0.1s ease, text-shadow 0.1s ease;
 }
 
-.d-btn.active,
-.d-btn:active {
-  background: #FFC107 !important;
-  color: #000 !important;
-  transform: translate(2px, 2px);
-  box-shadow: none !important;
+.j-arrow.j-up { top: 6px; left: 50%; transform: translateX(-50%); }
+.j-arrow.j-down { bottom: 6px; left: 50%; transform: translateX(-50%); }
+.j-arrow.j-left { left: 6px; top: 50%; transform: translateY(-50%); }
+.j-arrow.j-right { right: 6px; top: 50%; transform: translateY(-50%); }
+
+.j-arrow.active {
+  color: #FFC107;
+  text-shadow: 0 0 6px #FF9800;
+  transform: translateX(-50%) scale(1.25);
+}
+.j-arrow.j-left.active,
+.j-arrow.j-right.active {
+  transform: translateY(-50%) scale(1.25);
 }
 
-/* Action Buttons Klasteri */
+/* Action Buttons Klasteri (O'ng burchak, yarim-shaffof, ergonomik) */
 .action-buttons-cluster {
+  pointer-events: auto;
   display: flex;
   flex-direction: column;
   gap: 8px;
+  touch-action: none;
 }
 
 .action-top-row,
@@ -875,13 +919,17 @@ html, body {
 }
 
 .act-btn {
-  height: 48px;
-  min-width: 62px;
-  padding: 4px 8px;
-  border: 3px solid #30201C;
+  height: 46px;
+  min-width: 58px;
+  padding: 4px 6px;
+  border: 2px solid rgba(255, 248, 225, 0.65);
+  border-radius: 8px;
+  background: rgba(48, 32, 28, 0.6);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   font-family: var(--font-pixel);
   cursor: pointer;
-  box-shadow: 3px 3px 0px #30201C;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
   touch-action: none;
   display: flex;
   flex-direction: column;
@@ -892,7 +940,8 @@ html, body {
   user-select: none;
   -webkit-user-select: none;
   -webkit-tap-highlight-color: transparent;
-  transition: transform 0.05s, filter 0.05s;
+  transition: transform 0.05s ease, filter 0.08s ease, background-color 0.1s ease;
+  opacity: 0.88;
 }
 
 .act-btn .act-symbol {
@@ -908,36 +957,44 @@ html, body {
 
 .act-btn:active {
   transform: translate(2px, 2px);
-  box-shadow: 1px 1px 0px #30201C;
-  filter: brightness(1.2);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  filter: brightness(1.25);
+  opacity: 1;
 }
 
+/* 🔫 Otish tugmasi - asosiy harakat, qulay va yorqinroq */
 .btn-shoot {
-  background: linear-gradient(180deg, #FF5252 0%, #D32F2F 100%) !important;
-  min-width: 74px !important;
-  height: 52px !important;
-  border-color: #B71C1C !important;
+  background: linear-gradient(180deg, rgba(244, 67, 54, 0.82) 0%, rgba(198, 40, 40, 0.88) 100%) !important;
+  border-color: rgba(255, 205, 210, 0.85) !important;
+  min-width: 68px !important;
+  height: 50px !important;
 }
 
 .btn-shoot .act-symbol {
-  font-size: 18px;
+  font-size: 17px;
 }
 
 .btn-shoot .act-text {
-  font-size: 8px;
+  font-size: 7.5px;
   font-weight: bold;
 }
 
+/* 🚗 Moshina tugmasi */
 .btn-car {
-  background: linear-gradient(180deg, #66BB6A 0%, #388E3C 100%) !important;
+  background: linear-gradient(180deg, rgba(76, 175, 80, 0.78) 0%, rgba(46, 125, 50, 0.85) 100%) !important;
+  border-color: rgba(200, 230, 201, 0.8) !important;
 }
 
+/* ⛽ Benzin tugmasi */
 .btn-fuel {
-  background: linear-gradient(180deg, #FFA726 0%, #F57C00 100%) !important;
+  background: linear-gradient(180deg, rgba(255, 152, 0, 0.78) 0%, rgba(230, 81, 0, 0.85) 100%) !important;
+  border-color: rgba(255, 224, 178, 0.8) !important;
 }
 
+/* 🆘 SOS Qutqaruv tugmasi - yuqori qatorda alohida */
 .btn-rescue-act {
-  background: linear-gradient(180deg, #E53935 0%, #B71C1C 100%) !important;
+  background: linear-gradient(180deg, rgba(156, 39, 176, 0.78) 0%, rgba(106, 27, 154, 0.85) 100%) !important;
+  border-color: rgba(225, 190, 231, 0.8) !important;
 }
 
 /* O'qlar borligini ko'rsatuvchi vizual ta'sir */
@@ -1011,13 +1068,13 @@ html, body {
     display: flex !important;
   }
 
-  /* Vertikal (Portret) holatda Canvas va Pult taqsimoti */
+  /* Vertikal (Portret) holatda Canvas BUTUN ekranni to'liq egallaydi */
   #canvas-wrapper {
     flex: 1;
     width: 100%;
-    height: calc(100dvh - 44px - 165px);
-    max-height: calc(100dvh - 44px - 165px);
-    padding: 2px;
+    height: calc(100dvh - 38px);
+    max-height: calc(100dvh - 38px);
+    padding: 0;
   }
 
   #gameCanvas {
@@ -1028,18 +1085,26 @@ html, body {
     object-fit: contain;
   }
 
-  /* Mobil boshqaruv pulti pastda zo'r joylashadi */
+  /* Mobil boshqaruv pulti - ekran ustida suzuvchi (transparent overlay) */
   #touch-controls {
     display: flex !important;
-    width: 100%;
-    height: 165px;
-    min-height: 165px;
-    background: #141414;
-    border-top: 3px solid #30201C;
-    padding: 8px 12px;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 -4px 12px rgba(0,0,0,0.5);
+    position: absolute !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    top: auto !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 8px 12px !important;
+    padding-bottom: max(10px, env(safe-area-inset-bottom)) !important;
+    padding-left: max(10px, env(safe-area-inset-left)) !important;
+    padding-right: max(10px, env(safe-area-inset-right)) !important;
+    pointer-events: none !important;
+    z-index: 35 !important;
   }
 
   /* Bosh menyu va boshqa modallarni moslashtirish */
@@ -1077,48 +1142,55 @@ html, body {
   }
 
   #touch-controls {
-    height: 155px;
-    min-height: 155px;
-    padding: 6px 8px;
+    padding: 6px 8px !important;
+    padding-bottom: max(8px, env(safe-area-inset-bottom)) !important;
   }
 
-  .d-pad {
-    width: 125px;
-    height: 125px;
+  .joystick-zone {
+    width: 114px;
+    height: 114px;
   }
 
-  .d-btn {
-    width: 40px;
-    height: 40px;
-    font-size: 14px;
+  .joystick-base {
+    width: 96px;
+    height: 96px;
   }
 
-  .d-pad-center {
+  .joystick-stick {
     width: 38px;
     height: 38px;
   }
 
   .act-btn {
-    height: 44px;
-    min-width: 54px;
+    height: 42px;
+    min-width: 50px;
+    padding: 3px 5px;
+  }
+
+  .act-btn .act-symbol {
+    font-size: 13px;
+  }
+
+  .act-btn .act-text {
+    font-size: 6.5px;
   }
 
   .btn-shoot {
-    min-width: 64px !important;
-    height: 48px !important;
+    min-width: 60px !important;
+    height: 46px !important;
   }
 }
 
 /* Gorizontal (Landshaft) holatda o'ynash */
 @media (max-width: 950px) and (orientation: landscape) {
   #canvas-wrapper {
-    height: calc(100dvh - 44px) !important;
-    max-height: calc(100dvh - 44px) !important;
+    height: calc(100dvh - 36px) !important;
+    max-height: calc(100dvh - 36px) !important;
   }
 
   #touch-controls {
     position: absolute !important;
-    bottom: 6px !important;
+    bottom: 0 !important;
     left: 0 !important;
     right: 0 !important;
     height: auto !important;
@@ -1126,33 +1198,37 @@ html, body {
     background: transparent !important;
     border: none !important;
     box-shadow: none !important;
-    padding: 0 16px !important;
+    padding: 6px 14px !important;
+    padding-bottom: max(6px, env(safe-area-inset-bottom)) !important;
+    padding-left: max(10px, env(safe-area-inset-left)) !important;
+    padding-right: max(10px, env(safe-area-inset-right)) !important;
     pointer-events: none !important;
   }
 
-  .d-pad-container,
-  .action-buttons-cluster {
-    pointer-events: auto !important;
-    background: rgba(0, 0, 0, 0.45);
-    border-radius: 8px;
-    padding: 4px;
-    backdrop-filter: blur(2px);
+  .joystick-zone {
+    width: 110px;
+    height: 110px;
   }
 
-  .d-btn {
-    width: 40px;
-    height: 40px;
-    font-size: 14px;
+  .joystick-base {
+    width: 92px;
+    height: 92px;
   }
 
-  .d-pad-center {
-    width: 38px;
-    height: 38px;
+  .joystick-stick {
+    width: 36px;
+    height: 36px;
   }
 
   .act-btn {
-    height: 42px;
-    min-width: 54px;
+    height: 40px;
+    min-width: 50px;
+    padding: 2px 4px;
+  }
+
+  .btn-shoot {
+    min-width: 62px !important;
+    height: 44px !important;
   }
 }
 
