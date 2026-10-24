@@ -1,0 +1,1415 @@
+/* ==========================================================
+   "XAZINA OVCHISI" - 2D O'YINI UCHUN ASOSIY STILLAR (CSS)
+   Muallif: Professional Frontend Dasturchi & O'yin Dizayneri
+   ========================================================== */
+
+:root {
+  --color-sand: #E8D8A0;
+  --color-sand-dark: #D4C184;
+  --color-grass: #4CAF50;
+  --color-road: #6B6B6B;
+  --color-stone: #8D8D8D;
+  --color-gold: #FFC107;
+  --color-gold-dark: #D49B00;
+  --color-trap: #E53935;
+  --color-text: #4E342E;
+  --color-text-light: #FFF8E1;
+  --color-primary: #FF9800;
+  --color-primary-dark: #E65100;
+  --color-secondary: #2196F3;
+  --color-fuel-green: #4CAF50;
+  --color-fuel-low: #F44336;
+  --font-pixel: 'Press Start 2P', monospace, sans-serif;
+  --box-shadow-pixel: 4px 4px 0px #30201C;
+  --box-shadow-inset: inset -3px -3px 0px rgba(0,0,0,0.3), inset 3px 3px 0px rgba(255,255,255,0.4);
+}
+
+/* Barcha elementlar uchun umumiy sozlamalar */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #1a1a1a;
+  background-image: 
+    radial-gradient(circle at 25% 25%, #282828 2%, transparent 3%),
+    radial-gradient(circle at 75% 75%, #202020 3%, transparent 4%);
+  background-size: 32px 32px;
+  font-family: var(--font-pixel);
+  color: var(--color-text);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Asosiy konteyner - to'liq ekran (Fullsize) */
+#game-container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  max-width: 100vw;
+  max-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+#game-play-area {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Tugmalar va interaktiv elementlar */
+.btn {
+  font-family: var(--font-pixel);
+  font-size: 11px;
+  line-height: 1.4;
+  padding: 12px 18px;
+  border: 3px solid #30201C;
+  border-radius: 0;
+  cursor: pointer;
+  box-shadow: var(--box-shadow-pixel);
+  transition: transform 0.08s ease, filter 0.08s ease;
+  text-transform: uppercase;
+  color: #FFFFFF;
+  text-shadow: 2px 2px 0px #30201C;
+}
+
+.btn:hover {
+  filter: brightness(1.1);
+}
+
+.btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px #30201C;
+}
+
+.btn-primary {
+  background: var(--color-primary);
+  background: linear-gradient(180deg, #FFA726 0%, #FB8C00 100%);
+}
+
+.btn-secondary {
+  background: var(--color-secondary);
+  background: linear-gradient(180deg, #42A5F5 0%, #1E88E5 100%);
+}
+
+.btn-icon {
+  font-size: 16px;
+  background: #FFF8E1;
+  border: 2px solid #30201C;
+  padding: 4px 8px;
+  cursor: pointer;
+  box-shadow: 2px 2px 0px #30201C;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-icon:active {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0px #30201C;
+}
+
+/* ==========================================================
+   1. HUD (AXBOROT PANELI)
+   ========================================================== */
+#game-hud {
+  width: 100%;
+  max-width: 100%;
+  background: #FFF8E1;
+  border: none;
+  border-bottom: 3px solid #30201C;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+  padding: 6px 14px;
+  margin-bottom: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 10px;
+  z-index: 15;
+  flex-shrink: 0;
+}
+
+.hud-main-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.hud-desktop-extra {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* Burger Menyu Tugmasi (Standart desktopda yashirin) */
+.burger-menu-btn {
+  display: none;
+  background: #30201C !important;
+  color: #FFC107 !important;
+  border: 2px solid #FFC107 !important;
+  font-size: 16px !important;
+  padding: 5px 9px !important;
+  cursor: pointer;
+  line-height: 1;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0;
+  box-shadow: 2px 2px 0px #000;
+  transition: transform 0.1s;
+}
+
+.burger-menu-btn:active {
+  transform: scale(0.92);
+}
+
+.hud-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(232, 216, 160, 0.4);
+  padding: 4px 8px;
+  border: 2px solid #5D4037;
+}
+
+.hud-label {
+  color: #5D4037;
+  font-weight: bold;
+}
+
+.hud-gems {
+  color: #00838F;
+  font-weight: bold;
+}
+
+.hud-enemies {
+  color: #D32F2F;
+  font-weight: bold;
+}
+
+#hud-lives-icons {
+  letter-spacing: 2px;
+  font-size: 14px;
+}
+
+/* Kalit ikonasi */
+#hud-key-icon {
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+#hud-key-icon.key-inactive {
+  filter: grayscale(1) opacity(0.35);
+}
+
+#hud-key-icon.key-active {
+  filter: none;
+  animation: keyGlow 1s infinite alternate;
+}
+
+@keyframes keyGlow {
+  0% { transform: scale(1); filter: drop-shadow(0 0 2px #FFC107); }
+  100% { transform: scale(1.25); filter: drop-shadow(0 0 8px #FF9800); }
+}
+
+/* Radar ko'rsatkichi */
+.hud-radar {
+  color: #00838F;
+  font-weight: bold;
+}
+
+#hud-radar-status {
+  font-size: 11px;
+  padding: 2px 4px;
+  border-radius: 3px;
+  display: inline-block;
+  transition: all 0.2s ease;
+}
+
+#hud-radar-status.radar-off {
+  color: #8D6E63;
+  opacity: 0.55;
+}
+
+#hud-radar-status.radar-active {
+  color: #00E5FF;
+  background: rgba(0, 229, 255, 0.15);
+  animation: radarPulse 1.2s infinite alternate;
+}
+
+#hud-radar-status.radar-near {
+  color: #FFD600;
+  background: rgba(255, 214, 0, 0.2);
+  animation: radarFastPulse 0.4s infinite alternate;
+}
+
+#hud-radar-status.radar-here {
+  color: #FFF;
+  background: #D50000;
+  font-weight: 900;
+  animation: radarAlarm 0.25s infinite alternate;
+}
+
+@keyframes radarPulse {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.08); filter: drop-shadow(0 0 3px #00E5FF); }
+}
+
+@keyframes radarFastPulse {
+  0% { transform: scale(1); filter: brightness(1); }
+  100% { transform: scale(1.15); filter: brightness(1.4); }
+}
+
+@keyframes radarAlarm {
+  0% { transform: scale(1); box-shadow: 0 0 4px #FF1744; }
+  100% { transform: scale(1.2); box-shadow: 0 0 10px #FF1744; }
+}
+
+/* Benzin ko'rsatkichi */
+.fuel-bar-wrap {
+  width: 70px;
+  height: 12px;
+  background: #333;
+  border: 2px solid #222;
+  position: relative;
+  overflow: hidden;
+}
+
+#fuel-bar-inner {
+  height: 100%;
+  background: var(--color-fuel-green);
+  transition: width 0.2s linear, background-color 0.3s;
+}
+
+#fuel-bar-inner.low-fuel {
+  background: var(--color-fuel-low);
+  animation: fuelBlink 0.5s infinite alternate;
+}
+
+@keyframes fuelBlink {
+  0% { opacity: 1; }
+  100% { opacity: 0.3; }
+}
+
+.hud-buttons {
+  display: flex;
+  gap: 6px;
+}
+
+/* ==========================================================
+   2. CANVAS MAYDONI VA OVERLAYLAR (FULLSCREEN OPTIMAL 60FPS)
+   ========================================================== */
+#canvas-wrapper {
+  position: relative;
+  flex: 1;
+  width: 100%;
+  height: calc(100vh - 55px);
+  max-width: 100%;
+  max-height: calc(100vh - 55px);
+  background: #112211;
+  border: none;
+  box-shadow: none;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#gameCanvas {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: 100%;
+  aspect-ratio: 800 / 560;
+  display: block;
+  object-fit: contain;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  box-shadow: 0 0 35px rgba(0, 0, 0, 0.85);
+  transform: translateZ(0); /* GPU Hardware acceleration */
+  backface-visibility: hidden;
+}
+
+/* Zarba olganda ekranning qizarishi */
+.flash-effect {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(229, 57, 53, 0.45);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.08s ease-out;
+  z-index: 20;
+}
+
+.flash-effect.active {
+  opacity: 1;
+}
+
+/* O'yin ichidagi popup xabarlar (Toast) */
+.toast-message {
+  position: absolute;
+  bottom: 25px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #30201C;
+  color: #FFF8E1;
+  border: 3px solid #FFC107;
+  padding: 10px 18px;
+  font-size: 10px;
+  text-align: center;
+  z-index: 30;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+  animation: toastPop 0.3s ease-out;
+  pointer-events: none;
+  line-height: 1.5;
+  max-width: 85%;
+}
+
+@keyframes toastPop {
+  0% { transform: translate(-50%, 15px); opacity: 0; }
+  100% { transform: translate(-50%, 0); opacity: 1; }
+}
+
+/* ==========================================================
+   3. EKRANLAR (MENYU, YUTUQ, YUTQAZISH, PAUZA)
+   ========================================================== */
+.screen {
+  width: 100%;
+  max-width: 800px;
+  min-height: 480px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 50;
+}
+
+.screen.hidden,
+.hidden {
+  display: none !important;
+}
+
+/* Bosh menyu dizayni */
+.menu-box {
+  background: #FFF8E1;
+  border: 5px solid #30201C;
+  box-shadow: 8px 8px 0px #30201C;
+  padding: 35px 25px;
+  text-align: center;
+  width: 90%;
+  max-width: 580px;
+}
+
+.game-title {
+  font-size: 20px;
+  color: #B71C1C;
+  text-shadow: 3px 3px 0px #FFC107, 4px 4px 0px #30201C;
+  margin-bottom: 12px;
+  letter-spacing: 1px;
+}
+
+.game-subtitle {
+  font-size: 10px;
+  color: #5D4037;
+  margin-bottom: 25px;
+}
+
+.high-score-badge {
+  background: #FFE082;
+  border: 2px dashed #B71C1C;
+  padding: 10px;
+  font-size: 11px;
+  margin-bottom: 25px;
+  color: #4E342E;
+}
+
+.menu-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 30px;
+}
+
+.character-preview {
+  font-size: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+}
+
+.preview-arrow {
+  font-size: 14px;
+  color: #8D8D8D;
+}
+
+/* Modallar va Dialog oynalari */
+.modal-overlay,
+.pause-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(46, 32, 28, 0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 60;
+  padding: 15px;
+}
+
+.modal-card,
+.dialog-box,
+.pause-box {
+  background: #FFF8E1;
+  border: 4px solid #30201C;
+  box-shadow: 6px 6px 0px #000;
+  padding: 24px;
+  text-align: center;
+  max-width: 520px;
+  width: 100%;
+}
+
+.modal-card h2,
+.dialog-box h2,
+.pause-box h2 {
+  font-size: 14px;
+  color: #B71C1C;
+  margin-bottom: 18px;
+  text-shadow: 2px 2px 0px #FFC107;
+}
+
+.instructions-content {
+  font-size: 9px;
+  line-height: 1.8;
+  text-align: left;
+  margin-bottom: 20px;
+  max-height: 280px;
+  overflow-y: auto;
+  padding-right: 5px;
+}
+
+.instruction-row {
+  margin-bottom: 12px;
+}
+
+.instruction-row .badge {
+  display: inline-block;
+  background: #30201C;
+  color: #FFF;
+  padding: 2px 6px;
+  margin-right: 6px;
+  font-size: 8px;
+}
+
+.pixel-hr {
+  border: none;
+  border-top: 2px dashed #8D8D8D;
+  margin: 12px 0;
+}
+
+.dialog-box p,
+.pause-box p {
+  font-size: 10px;
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+.win-crown,
+.skull-icon {
+  font-size: 40px;
+  margin-bottom: 10px;
+}
+
+.stats-summary {
+  background: #FFE082;
+  border: 2px solid #5D4037;
+  padding: 12px;
+  margin-bottom: 20px;
+  font-size: 9px;
+}
+
+.stat-line {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.stat-line.total-score {
+  border-top: 2px dashed #5D4037;
+  padding-top: 6px;
+  margin-top: 6px;
+  font-size: 11px;
+  font-weight: bold;
+  color: #B71C1C;
+}
+
+.dialog-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* ==========================================================
+   4. MOBIL BURGER MENYU DRAWER (RESPONSIVE POP-UP)
+   ========================================================== */
+.burger-drawer {
+  max-width: 360px;
+  width: 90%;
+  background: #FFF8E1;
+  border: 4px solid #30201C;
+  box-shadow: 6px 6px 0px #000;
+  padding: 12px 14px;
+  max-height: 90vh;
+  max-height: 90dvh;
+  overflow-y: auto;
+  text-align: center;
+  position: relative;
+  scrollbar-width: thin;
+  scrollbar-color: #30201C #FFE082;
+}
+
+.burger-drawer::-webkit-scrollbar {
+  width: 4px;
+}
+.burger-drawer::-webkit-scrollbar-thumb {
+  background: #30201C;
+}
+
+.burger-drawer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  border-bottom: 2px solid #30201C;
+  padding-bottom: 6px;
+}
+
+.burger-drawer-header h2 {
+  font-size: 11px;
+  color: #B71C1C;
+  margin: 0;
+  text-shadow: 1px 1px 0px #FFC107;
+  letter-spacing: 0.5px;
+}
+
+.btn-icon-close {
+  background: #B71C1C;
+  color: #FFF;
+  border: 2px solid #30201C;
+  font-family: var(--font-pixel);
+  font-size: 12px;
+  width: 26px;
+  height: 26px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 2px 2px 0px #30201C;
+}
+
+.btn-icon-close:active {
+  transform: translate(1px, 1px);
+  box-shadow: none;
+}
+
+/* Statistika kartalari (4 ta ixcham katak) */
+.burger-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 5px;
+  margin-bottom: 8px;
+}
+
+.burger-stat-card {
+  background: #FFE082;
+  border: 2px solid #5D4037;
+  padding: 5px 2px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+}
+
+.bstat-icon { font-size: 14px; line-height: 1; }
+.bstat-val { font-size: 9px; font-weight: bold; color: #30201C; }
+.bstat-label { font-size: 6.5px; color: #5D4037; text-transform: uppercase; }
+
+/* Benzin va Radar bloki */
+.burger-bars-container {
+  background: rgba(232, 216, 160, 0.4);
+  border: 2px solid #5D4037;
+  padding: 6px 8px;
+  margin-bottom: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 8px;
+  text-align: left;
+}
+
+.burger-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.bbar-label { min-width: 68px; color: #5D4037; font-weight: bold; font-size: 7.5px; }
+
+/* Harakat tugmalari ro'yxati */
+.burger-actions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.burger-btn-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.btn-burger-action {
+  font-size: 7.5px !important;
+  padding: 7px 4px !important;
+  min-height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  line-height: 1.2;
+}
+
+.btn-rescue-drawer {
+  background: #D32F2F !important;
+  border-color: #B71C1C !important;
+  color: #FFF !important;
+  font-size: 8px !important;
+  padding: 7px 8px !important;
+  min-height: 35px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.btn-rescue-drawer small {
+  font-size: 7px;
+  opacity: 0.9;
+}
+
+.btn-danger-pixel {
+  background: #616161 !important;
+  border-color: #37474F !important;
+  color: #FFF !important;
+}
+
+.btn-resume-main {
+  width: 100%;
+  padding: 9px 8px !important;
+  font-size: 10px !important;
+  min-height: 36px;
+  background: linear-gradient(180deg, #FFA000 0%, #E65100 100%) !important;
+  border-color: #BF360C !important;
+  box-shadow: 3px 3px 0px #30201C !important;
+}
+
+/* Kichik bo'yli ekranlar uchun maxsus moslashuv */
+@media (max-height: 650px) {
+  .burger-drawer {
+    padding: 8px 10px;
+    max-height: 94vh;
+  }
+  .burger-drawer-header {
+    margin-bottom: 5px;
+    padding-bottom: 4px;
+  }
+  .burger-stats-grid {
+    margin-bottom: 5px;
+    gap: 4px;
+  }
+  .burger-stat-card {
+    padding: 3px 2px;
+  }
+  .bstat-icon { font-size: 12px; }
+  .burger-bars-container {
+    padding: 4px 6px;
+    margin-bottom: 5px;
+    gap: 3px;
+  }
+  .burger-actions-list {
+    gap: 4px;
+    margin-bottom: 6px;
+  }
+  .burger-btn-row {
+    gap: 4px;
+  }
+  .btn-burger-action {
+    min-height: 29px;
+    padding: 5px 3px !important;
+    font-size: 7px !important;
+  }
+  .btn-rescue-drawer {
+    min-height: 30px;
+    padding: 5px 6px !important;
+    font-size: 7.5px !important;
+  }
+  .btn-resume-main {
+    min-height: 32px;
+    padding: 7px !important;
+    font-size: 9px !important;
+  }
+}
+
+/* ==========================================================
+   4.5. MOBIL VA SENSORLI BOSHQARUV TUGMALARI
+   ========================================================== */
+#touch-controls {
+  display: none;
+  width: 100%;
+  box-sizing: border-box;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+  -webkit-touch-callout: none;
+}
+
+/* D-Pad konteyneri */
+.d-pad-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.d-pad {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.d-pad-horizontal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.d-pad-center {
+  width: 44px;
+  height: 44px;
+  background: #251614;
+  border: 1px solid #1a0e0c;
+}
+
+.d-btn {
+  width: 46px;
+  height: 46px;
+  background: #FFF8E1;
+  border: 3px solid #30201C;
+  font-size: 18px;
+  font-family: var(--font-pixel);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 2px 2px 0px #30201C;
+  touch-action: none;
+  color: #30201C;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.05s, background-color 0.05s;
+}
+
+.d-btn.active,
+.d-btn:active {
+  background: #FFC107 !important;
+  color: #000 !important;
+  transform: translate(2px, 2px);
+  box-shadow: none !important;
+}
+
+/* Action Buttons Klasteri */
+.action-buttons-cluster {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.action-top-row,
+.action-bottom-row {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.act-btn {
+  height: 48px;
+  min-width: 62px;
+  padding: 4px 8px;
+  border: 3px solid #30201C;
+  font-family: var(--font-pixel);
+  cursor: pointer;
+  box-shadow: 3px 3px 0px #30201C;
+  touch-action: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  color: #FFF;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.05s, filter 0.05s;
+}
+
+.act-btn .act-symbol {
+  font-size: 15px;
+  line-height: 1;
+}
+
+.act-btn .act-text {
+  font-size: 7px;
+  letter-spacing: 0.5px;
+  text-shadow: 1px 1px 0px #000;
+}
+
+.act-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0px #30201C;
+  filter: brightness(1.2);
+}
+
+.btn-shoot {
+  background: linear-gradient(180deg, #FF5252 0%, #D32F2F 100%) !important;
+  min-width: 74px !important;
+  height: 52px !important;
+  border-color: #B71C1C !important;
+}
+
+.btn-shoot .act-symbol {
+  font-size: 18px;
+}
+
+.btn-shoot .act-text {
+  font-size: 8px;
+  font-weight: bold;
+}
+
+.btn-car {
+  background: linear-gradient(180deg, #66BB6A 0%, #388E3C 100%) !important;
+}
+
+.btn-fuel {
+  background: linear-gradient(180deg, #FFA726 0%, #F57C00 100%) !important;
+}
+
+.btn-rescue-act {
+  background: linear-gradient(180deg, #E53935 0%, #B71C1C 100%) !important;
+}
+
+/* O'qlar borligini ko'rsatuvchi vizual ta'sir */
+.hud-ammo {
+  font-weight: bold;
+}
+
+.ammo-has-bullets {
+  color: #D32F2F;
+  animation: ammoGlow 1s infinite alternate;
+}
+
+@keyframes ammoGlow {
+  0% { transform: scale(1); filter: drop-shadow(0 0 2px #FF5252); }
+  100% { transform: scale(1.15); filter: drop-shadow(0 0 6px #FF1744); }
+}
+
+/* ==========================================================
+   5. RESPONSIVE (MOSLASHUVCHAN) TELEFON QOIDALARI
+   ========================================================== */
+@media (max-width: 860px) {
+  #game-container {
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+  }
+
+  #game-play-area {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  /* Yuqori HUD paneli ixchamlashadi: faqat muhim indikatorlar + Burger */
+  #game-hud {
+    height: 44px;
+    min-height: 44px;
+    padding: 4px 10px;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #30201C;
+  }
+
+  .hud-main-group {
+    gap: 6px;
+    flex-wrap: nowrap;
+  }
+
+  .hud-main-group .hud-item {
+    padding: 3px 6px;
+    font-size: 9px;
+    gap: 4px;
+  }
+
+  #hud-lives-icons {
+    font-size: 12px;
+    letter-spacing: 1px;
+  }
+
+  /* Desktopga tegishli barcha ortiqcha tugmalar yashiriladi! */
+  .hud-desktop-extra {
+    display: none !important;
+  }
+
+  /* Burger menyu tugmasi ko'rinadi! */
+  .burger-menu-btn {
+    display: flex !important;
+  }
+
+  /* Vertikal (Portret) holatda Canvas va Pult taqsimoti */
+  #canvas-wrapper {
+    flex: 1;
+    width: 100%;
+    height: calc(100dvh - 44px - 165px);
+    max-height: calc(100dvh - 44px - 165px);
+    padding: 2px;
+  }
+
+  #gameCanvas {
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+
+  /* Mobil boshqaruv pulti pastda zo'r joylashadi */
+  #touch-controls {
+    display: flex !important;
+    width: 100%;
+    height: 165px;
+    min-height: 165px;
+    background: #141414;
+    border-top: 3px solid #30201C;
+    padding: 8px 12px;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 -4px 12px rgba(0,0,0,0.5);
+  }
+
+  /* Bosh menyu va boshqa modallarni moslashtirish */
+  .menu-box {
+    padding: 20px 14px;
+    width: 95%;
+  }
+
+  .game-title {
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+
+  .game-subtitle {
+    font-size: 8px;
+    margin-bottom: 14px;
+  }
+
+  .btn {
+    padding: 10px 14px;
+    font-size: 9px;
+  }
+}
+
+/* Kichik ekranli telefonlar (iPhone SE, 360px-400px) */
+@media (max-width: 420px) {
+  .hud-main-group .hud-item {
+    padding: 2px 4px;
+    font-size: 8px;
+    gap: 3px;
+  }
+
+  .hud-main-group .hud-label {
+    display: none; /* FAQAT Ikonka va son qoladi, joy tejaladi! */
+  }
+
+  #touch-controls {
+    height: 155px;
+    min-height: 155px;
+    padding: 6px 8px;
+  }
+
+  .d-pad {
+    width: 125px;
+    height: 125px;
+  }
+
+  .d-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 14px;
+  }
+
+  .d-pad-center {
+    width: 38px;
+    height: 38px;
+  }
+
+  .act-btn {
+    height: 44px;
+    min-width: 54px;
+  }
+
+  .btn-shoot {
+    min-width: 64px !important;
+    height: 48px !important;
+  }
+}
+
+/* Gorizontal (Landshaft) holatda o'ynash */
+@media (max-width: 950px) and (orientation: landscape) {
+  #canvas-wrapper {
+    height: calc(100dvh - 44px) !important;
+    max-height: calc(100dvh - 44px) !important;
+  }
+
+  #touch-controls {
+    position: absolute !important;
+    bottom: 6px !important;
+    left: 0 !important;
+    right: 0 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 16px !important;
+    pointer-events: none !important;
+  }
+
+  .d-pad-container,
+  .action-buttons-cluster {
+    pointer-events: auto !important;
+    background: rgba(0, 0, 0, 0.45);
+    border-radius: 8px;
+    padding: 4px;
+    backdrop-filter: blur(2px);
+  }
+
+  .d-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 14px;
+  }
+
+  .d-pad-center {
+    width: 38px;
+    height: 38px;
+  }
+
+  .act-btn {
+    height: 42px;
+    min-width: 54px;
+  }
+}
+
+/* ==========================================================
+   14. QUTQARUV SAVOLI MODALI & HUD TUGMASI (SOS)
+   ========================================================== */
+
+/* HUD Qutqaruv tugmasi */
+.hud-rescue-btn {
+  background: #D32F2F !important;
+  color: #FFF !important;
+  border: 2px solid #FFCDD2 !important;
+  box-shadow: 2px 2px 0px #000;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-pixel);
+  font-size: 9px;
+  padding: 4px 8px;
+  transition: transform 0.1s, background-color 0.2s;
+  animation: rescuePulse 1.8s infinite ease-in-out;
+}
+
+.hud-rescue-btn:hover {
+  background: #B71C1C !important;
+  transform: scale(1.05);
+}
+
+.hud-rescue-btn.used {
+  background: #616161 !important;
+  border-color: #9E9E9E !important;
+  color: #BDBDBD !important;
+  cursor: not-allowed;
+  animation: none;
+  opacity: 0.6;
+}
+
+@keyframes rescuePulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(229, 57, 53, 0.7);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 8px 3px rgba(255, 193, 7, 0.9);
+    transform: scale(1.04);
+  }
+}
+
+/* Mobil pultdagi SOS tugmasi */
+.btn-rescue-act {
+  background: #D32F2F !important;
+  border-color: #B71C1C !important;
+}
+
+.btn-rescue-act.used {
+  background: #757575 !important;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* Qutqaruvchi modal oynasi */
+.rescue-card {
+  max-width: 560px;
+  background: #FFF8E1;
+  border: 5px solid #D32F2F;
+  box-shadow: 8px 8px 0px #212121;
+  padding: 22px 20px;
+  text-align: center;
+  position: relative;
+}
+
+.rescue-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.rescue-header .badge {
+  font-size: 9px;
+  padding: 5px 10px;
+  background: #30201C;
+  color: #FFC107;
+  border: 2px solid #5D4037;
+  letter-spacing: 1px;
+}
+
+.rescue-timer-badge {
+  font-size: 11px;
+  font-weight: bold;
+  color: #B71C1C;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.rescue-timer-bar {
+  width: 100%;
+  height: 10px;
+  background: #E0E0E0;
+  border: 2px solid #30201C;
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+
+#rescue-timer-progress {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, #4CAF50, #FFC107, #F44336);
+  transition: width 0.1s linear;
+}
+
+.rescue-card h2 {
+  font-size: 13px;
+  color: #D32F2F;
+  margin-bottom: 8px;
+  text-shadow: 2px 2px 0px #FFCDD2;
+}
+
+.rescue-card p {
+  font-size: 9px;
+  color: #5D4037;
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+
+.rescue-question-box {
+  background: #FFF;
+  border: 3px dashed #8D8D8D;
+  padding: 16px 12px;
+  margin-bottom: 18px;
+  min-height: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.rescue-flag-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 2px 0 6px 0;
+}
+
+.rescue-flag-img {
+  width: 140px;
+  max-width: 150px;
+  height: 88px;
+  object-fit: cover;
+  border: 3px solid #30201C;
+  box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.4);
+  border-radius: 2px;
+  background: #FFF;
+}
+
+.rescue-question-label {
+  font-size: 12px;
+  color: #212121;
+  line-height: 1.6;
+}
+
+/* Variantlar tugmalari tarmog'i */
+.rescue-options-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.rescue-btn-opt {
+  background: #2196F3;
+  color: #FFF;
+  border: 3px solid #1565C0;
+  box-shadow: 3px 3px 0px #0D47A1;
+  padding: 14px 10px;
+  font-family: var(--font-pixel);
+  font-size: 10px;
+  cursor: pointer;
+  transition: all 0.1s ease;
+  text-transform: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+.rescue-btn-opt:hover:not(:disabled) {
+  background: #1976D2;
+  transform: translateY(-2px);
+}
+
+.rescue-btn-opt:active:not(:disabled) {
+  transform: translateY(2px);
+  box-shadow: 1px 1px 0px #0D47A1;
+}
+
+.rescue-btn-opt.correct {
+  background: #4CAF50 !important;
+  border-color: #2E7D32 !important;
+  box-shadow: 3px 3px 0px #1B5E20 !important;
+  animation: correctBounce 0.4s ease;
+}
+
+.rescue-btn-opt.wrong {
+  background: #E53935 !important;
+  border-color: #B71C1C !important;
+  box-shadow: 3px 3px 0px #7F0000 !important;
+  animation: wrongShake 0.4s ease;
+}
+
+@keyframes correctBounce {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+}
+
+@keyframes wrongShake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-6px); }
+  40%, 80% { transform: translateX(6px); }
+}
+
+.rescue-feedback {
+  font-size: 11px;
+  font-weight: bold;
+  padding: 8px;
+  margin-top: 6px;
+  border-radius: 0;
+}
+
+.rescue-feedback.success {
+  background: #C8E6C9;
+  color: #2E7D32;
+  border: 2px solid #4CAF50;
+}
+
+.rescue-feedback.failed {
+  background: #FFCDD2;
+  color: #C62828;
+  border: 2px solid #E53935;
+}
+
+@media (max-width: 600px) {
+  .rescue-options-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .rescue-btn-opt {
+    padding: 10px 8px;
+    font-size: 9px;
+  }
+  .rescue-flag-img {
+    width: 110px;
+    height: 70px;
+  }
+}
+
